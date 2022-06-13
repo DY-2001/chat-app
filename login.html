@@ -1,0 +1,101 @@
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="/cssFile.css">
+</head>
+
+<body>
+  <div class="upper">
+    <button type="button" class="ivmain" onclick="window.open('/')">Login</button>
+    <button type="button" class="ivmain" onclick="window.open('/signUp')">Register</button>
+  </div>
+
+  <div class="lower">
+
+    <div id="login-box">
+
+      <div class="left">
+
+        <h1 id='status'>login</h1>
+
+        <input type="text" class="iem" id="email" name="email" placeholder="E-mail" />
+        <input type="password" class="ipa" id="password" name="password" placeholder="Password" />
+        <input type="submit" class="isu" id='login' name="login" value="Login"/>
+
+        <p class="inv" id="invd">invalid credentials<p>
+          <p class="inv" id="invd">user not exist<p></p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+    <!-- <script type = "text/javascript" src = "index.js"></script> -->
+
+</body>
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
+  import { getDatabase, set, ref, update } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-database.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-analytics.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCYXSBtfzr8ZBVwEMr0zp0tOy_0UNnyQWg",
+    authDomain: "chat-app-87fca.firebaseapp.com",
+    databaseURL: "https://chat-app-87fca-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "chat-app-87fca",
+    storageBucket: "chat-app-87fca.appspot.com",
+    messagingSenderId: "695952331973",
+    appId: "1:695952331973:web:d56d0ce5213dec91814cac",
+    measurementId: "G-6QXS7976ND"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const database = getDatabase(app);
+  const auth = getAuth();
+
+
+
+  login.addEventListener('click', (e) => {
+
+    var email = document.getElementById("email").value
+    var password = document.getElementById("password").value
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+
+        const dt = new Date();
+        update(ref(database, 'users/' + user.id), {
+          last_login: dt,
+
+
+        })
+
+        alert("user loged in!")
+        location.replace("/chat")
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert(errorMessage)
+        document.getElementById("invd").style.visibility="visible"
+      });
+  })
+
+
+</script>
+
+
+
+</html>
